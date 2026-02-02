@@ -63,11 +63,13 @@ module "in28minutes-cluster" {
 }
 
 data "aws_eks_cluster" "cluster" {
-  name = module.in28minutes-cluster.cluster_id
+  name       = "in28minutes-cluster"
+  depends_on = [module.in28minutes-cluster]
 }
 
 data "aws_eks_cluster_auth" "cluster" {
-  name = module.in28minutes-cluster.cluster_id
+  name       = "in28minutes-cluster"
+  depends_on = [module.in28minutes-cluster]
 }
 
 
