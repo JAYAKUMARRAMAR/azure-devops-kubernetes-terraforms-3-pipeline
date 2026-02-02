@@ -9,7 +9,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.0"
+      version = "~> 5.0"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
@@ -43,7 +43,7 @@ provider "kubernetes" {
 
 module "in28minutes-cluster" {
   source          = "terraform-aws-modules/eks/aws"
-  version         = "~> 19.0"
+  version         = "~> 20.0"
   cluster_name    = "in28minutes-cluster"
   cluster_version = "1.14"
   subnet_ids      = ["subnet-0765c64f8362f1fc0", "subnet-0bb3b3cfd3cf36047"] #CHANGE
