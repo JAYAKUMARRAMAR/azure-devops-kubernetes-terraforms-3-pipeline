@@ -7,6 +7,10 @@
 
 terraform {
   required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 4.0"
+    }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = "~> 2.12"
@@ -24,8 +28,11 @@ resource "aws_default_vpc" "default" {
 
 }
 
-data "aws_subnet_ids" "subnets" {
-  vpc_id = aws_default_vpc.default.id
+data "aws_subnets" "subnets" {
+  filter {
+    name   = "vpc-id"
+    values = [aws_default_vpc.default.id]
+  }
 }
 
 provider "kubernetes" {
@@ -40,7 +47,7 @@ module "in28minutes-cluster" {
   cluster_name    = "in28minutes-cluster"
   cluster_version = "1.14"
   subnet_ids      = ["subnet-0765c64f8362f1fc0", "subnet-0bb3b3cfd3cf36047"] #CHANGE
-  #subnet_ids = data.aws_subnet_ids.subnets.ids
+  #subnet_ids = data.aws_subnets.subnets.ids
   vpc_id          = aws_default_vpc.default.id
 
   #vpc_id         = "vpc-1234556abcdef"
