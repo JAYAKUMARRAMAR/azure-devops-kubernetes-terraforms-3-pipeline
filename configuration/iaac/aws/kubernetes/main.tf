@@ -46,6 +46,7 @@ module "in28minutes-cluster" {
   version         = "~> 20.0"
   cluster_name    = "in28minutes-cluster"
   cluster_version = "1.29"
+  enable_cluster_creator_admin_permissions = true
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = false
   subnet_ids      = ["subnet-0765c64f8362f1fc0", "subnet-0bb3b3cfd3cf36047"] #CHANGE
