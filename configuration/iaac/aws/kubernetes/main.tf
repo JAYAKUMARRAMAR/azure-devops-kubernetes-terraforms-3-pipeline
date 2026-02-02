@@ -6,6 +6,13 @@
 
 
 terraform {
+  required_providers {
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "~> 2.12"
+    }
+  }
+
   backend "s3" {
     bucket = "mybucket" # Will be overridden from build
     key    = "path/to/my/key" # Will be overridden from build
@@ -25,7 +32,6 @@ provider "kubernetes" {
   host                   = data.aws_eks_cluster.cluster.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority.0.data)
   token                  = data.aws_eks_cluster_auth.cluster.token
-  version                = "~> 2.12"
 }
 
 module "in28minutes-cluster" {
@@ -33,20 +39,20 @@ module "in28minutes-cluster" {
   version         = "~> 19.0"
   cluster_name    = "in28minutes-cluster"
   cluster_version = "1.14"
-  subnets         = ["subnet-0765c64f8362f1fc0", "subnet-0bb3b3cfd3cf36047"] #CHANGE
-  #subnets = data.aws_subnet_ids.subnets.ids
+  subnet_ids      = ["subnet-0765c64f8362f1fc0", "subnet-0bb3b3cfd3cf36047"] #CHANGE
+  #subnet_ids = data.aws_subnet_ids.subnets.ids
   vpc_id          = aws_default_vpc.default.id
 
   #vpc_id         = "vpc-1234556abcdef"
 
-  node_groups = [
-    {
-      instance_type = "t2.micro"
-      max_capacity  = 5
-      desired_capacity = 3
-      min_capacity  = 3
+  eks_managed_node_groups = {
+    default = {
+      instance_types = ["t3.micro"]
+      max_size       = 5
+      desired_size   = 3
+      min_size       = 3
     }
-  ]
+  }
 }
 
 data "aws_eks_cluster" "cluster" {
