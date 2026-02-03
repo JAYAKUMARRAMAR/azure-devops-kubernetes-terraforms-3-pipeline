@@ -99,3 +99,6 @@ resource "kubernetes_cluster_role_binding" "example" {
 provider "aws" {
   region  = "us-east-1"
 }
+
+#Access key ID	Secret access key
+#AKIASB456X66BUZM67AX	peYAFFqPS3rk34HUma8lizkBKJ8MrVWiV2EFnkgH
